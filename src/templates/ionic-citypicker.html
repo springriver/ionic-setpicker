@@ -1,0 +1,65 @@
+<div class="ionic-setpicker-backdrop">
+    <ion-modal-view class="ionic-setpicker-bg">
+        <div class="ionic-setpicker-bgclose" ng-click="setmodel.clickToClose()"></div>
+        <div class="set-picker">
+            <header class="bar set-picker-header" ng-class="bar-stable">
+                <div class="buttons">
+                    <button class="button button-clear button-positive" ng-click="setmodel.returnCancel()">取消</button>
+                </div>
+                <h1 class="title"></h1>
+                <div class="buttons">
+                    <button class="button button-clear button-positive" ng-click="setmodel.returnOk()">确定</button>
+                </div>
+            </header>
+            <div class="set-picker-inner has-header" style="top:44px; font-size: 0.9rem;">
+                <div class="row" ng-if="setmodel.platformId!='android'">
+                    <div class="col col-33">
+                        <ion-scroll-minh delegate-handle={{setmodel.provinceHandle}} on-scroll-complete="setmodel.getValue('province')" on-release="setmodel.scroll('province')" scrollbar-y=false>
+                            <ul>
+                                <li ng-repeat="province in setmodel.Service">{{province.name}}</li>
+                            </ul>
+                        </ion-scroll-minh>
+                    </div>
+                    <div class="col col-33">
+                        <ion-scroll-minh delegate-handle={{setmodel.cityHandle}} on-scroll-complete="setmodel.getValue('city')" on-release="setmodel.scroll('city')" scrollbar-y=false>
+                            <ul>
+                                <li ng-repeat="city in setmodel.province.sub">{{city.name}}</li>
+                            </ul>
+                        </ion-scroll-minh>
+                    </div>
+                    <div class="col col-33">
+                        <ion-scroll-minh delegate-handle={{setmodel.countryHandle}} on-scroll-complete="setmodel.getValue('country')" on-release="setmodel.scroll('country')" scrollbar-y=false>
+                            <ul>
+                                <li ng-repeat="country in setmodel.city.sub">{{country.name}}</li>
+                            </ul>
+                        </ion-scroll-minh>
+                    </div>
+                </div>
+                <div class="row" ng-if="setmodel.platformId=='android'">
+                    <div class="col col-33">
+                        <ion-scroll-minh delegate-handle={{setmodel.provinceHandle}} on-scroll-complete="setmodel.getValue('province')" on-drag-up="setmodel.scroll('province')" on-drag-down="setmodel.scroll('province')" scrollbar-y=false>
+                            <ul class="androidscroll">
+                                <li ng-repeat="province in setmodel.Service">{{province.name}}</li>
+                            </ul>
+                        </ion-scroll-minh>
+                    </div>
+                    <div class="col col-33">
+                        <ion-scroll-minh delegate-handle={{setmodel.cityHandle}} on-scroll-complete="setmodel.getValue('city')" on-drag-up="setmodel.scroll('city')" on-drag-down="setmodel.scroll('city')" scrollbar-y=false>
+                            <ul class="androidscroll">
+                                <li ng-repeat="city in setmodel.province.sub">{{city.name}}</li>
+                            </ul>
+                        </ion-scroll-minh>
+                    </div>
+                    <div class="col col-33">
+                        <ion-scroll-minh delegate-handle={{setmodel.countryHandle}} on-scroll-complete="setmodel.getValue('country')" on-drag-up="setmodel.scroll('country')" on-drag-down="setmodel.scroll('country')" scrollbar-y=false>
+                            <ul class="androidscroll">
+                                <li ng-repeat="country in setmodel.city.sub">{{country.name}}</li>
+                            </ul>
+                        </ion-scroll-minh>
+                    </div>
+                </div>
+                <div class="picker-center-highlight"></div>
+            </div>
+        </div>
+    </ion-modal-view>
+</div>
