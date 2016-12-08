@@ -48,6 +48,10 @@
     padding: 108px 0;
 }
 
+.set-picker .set-picker-panel .scroll {
+    padding: 10px 0;
+}
+
 .set-picker .ionic-scroll li {
     position: relative;
     top: 0;
@@ -82,6 +86,13 @@
     -ms-flex-pack: center;
     -webkit-justify-content: center;
     justify-content: center;
+}
+
+.set-picker .set-picker-panel {
+    background-color: white;
+    font-size: 1.2rem;
+    text-align: left;
+    line-height: 2;
 }
 
 .set-picker .picker-center-highlight {
@@ -133,7 +144,7 @@
     padding: 0;
 }
 
-.set-picker .item-note:after {
+.ionic-setpicker .item-note:after {
     content: " ";
     display: inline-block;
     -webkit-transform: rotate(45deg);
@@ -149,13 +160,19 @@
     margin-left: .3em;
 }
 
-.set-picker .item-note {
-    float: right;
-    color: #aaa;
-    font-size: 16px;
+.ionic-setpicker .item-title {
+    display: inline-block;
+    padding-top: 10px;
 }
 
-.androidscroll{
+.ionic-setpicker .item-note {
+    padding-top: 10px;
+    float: right;
+    color: #aaa;
+    font-size: 14px;
+}
+
+.androidscroll {
     flex: 1;
     overflow: scroll;
     -webkit-overflow-scrolling: touch;

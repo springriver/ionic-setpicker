@@ -1,0 +1,25 @@
+<div class="ionic-setpicker-backdrop">
+    <ion-modal-view class="ionic-setpicker-bg">
+        <div class="ionic-setpicker-bgclose" ng-click="setmodel.clickToClose()"></div>
+        <div class="set-picker">
+            <header class="bar set-picker-header" ng-class="bar-stable">
+                <div class="buttons">
+                    <button class="button button-clear button-positive" ng-click="setmodel.returnCancel()">取消</button>
+                    <button class="button button-clear button-positive" ng-click="setmodel.selectAll(setmodel)">全选</button>
+                    <button class="button button-clear button-positive" ng-click="setmodel.clearAll(setmodel)">全清</button>
+                </div>
+                <h1 class="title"></h1>
+                <div class="buttons">
+                    <button class="button button-clear button-positive" ng-click="setmodel.returnOk()">确定</button>
+                </div>
+            </header>
+            <ion-scroll class="set-picker-panel has-header" delegate-handle={{setmodel.Handle}} scrollbar-y=false style="top: 44px; padding: 0;">
+                 <div class="row padding" ng-repeat="s in setmodel.Service" ng-click="setmodel.getValue(s)">
+                    <div class="col col-20 text-center" ng-class="s.isChecked? 'ion-checkmark-round':''" style="color: #28a54c"></div>
+                    <div class="col">{{s.text}}</div>
+                </div>
+            </ion-scroll>
+        </div>
+
+    </ion-modal-view>
+</div>
