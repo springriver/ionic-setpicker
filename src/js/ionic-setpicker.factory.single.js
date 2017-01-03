@@ -17,8 +17,9 @@ app.factory('SingleFactory', ['$ionicPopup', '$timeout', '$ionicScrollDelegate',
 
         factory.loadingData = function (scope) {
             if (scope.setmodel.value != null && scope.setmodel.value != '') {
-                for (var i = 0; i < scope.setmodel.Service.length; i++) {
-                    if (scope.setmodel.value === scope.setmodel.Service[i]) {
+                var len = scope.setmodel.Service.length;
+                for (var i = 0; i < len; i++) {
+                    if (scope.setmodel.value === scope.setmodel.Service[i].key) {
                         $ionicScrollDelegate.$getByHandle(scope.setmodel.Handle).scrollTo(0, i * scope.setmodel.step);
                         break;
                     }
@@ -32,7 +33,7 @@ app.factory('SingleFactory', ['$ionicPopup', '$timeout', '$ionicScrollDelegate',
             $timeout(function () {
                 if (scope.setmodel.selectValue == null || scope.setmodel.selectValue == '') {
                     if (scope.setmodel.Service != null && scope.setmodel.Service.length > 0)
-                        scope.setmodel.selectValue = scope.setmodel.Service[0];
+                        scope.setmodel.selectValue = scope.setmodel.Service[0].key;
                     else
                         return;
                 }
@@ -58,7 +59,7 @@ app.factory('SingleFactory', ['$ionicPopup', '$timeout', '$ionicScrollDelegate',
                         $ionicScrollDelegate.$getByHandle(scope.setmodel.Handle).scrollTo(0, step * scope.setmodel.step, true);
                     }
                 }
-                scope.setmodel.selectValue = scope.setmodel.Service[step];
+                scope.setmodel.selectValue = scope.setmodel.Service[step].key;
             } finally {
                 scope.setmodel.isWorking = false;
             }

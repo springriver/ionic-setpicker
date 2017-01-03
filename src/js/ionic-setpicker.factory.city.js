@@ -25,7 +25,8 @@ app.factory('CityFactory', ['$ionicPopup', '$timeout', 'CityPickerService', '$io
             if (scope.setmodel.value != null)
                 AreaData = scope.setmodel.value.split(scope.setmodel.tag);
             if (AreaData[0]) { // 初始化省
-                for (var i = 0; i < scope.setmodel.Service.length; i++) {
+                var len = scope.setmodel.Service.length;
+                for (var i = 0; i < len; i++) {
                     if (AreaData[0] === scope.setmodel.Service[i].name) {
                         $ionicScrollDelegate.$getByHandle(scope.setmodel.provinceHandle).scrollTo(0, i * scope.setmodel.step);
                         scope.setmodel.province = scope.setmodel.Service[i];
@@ -34,7 +35,8 @@ app.factory('CityFactory', ['$ionicPopup', '$timeout', 'CityPickerService', '$io
                 }
             }
             if (AreaData[1] && scope.setmodel.province && scope.setmodel.province.sub) { // 初始化市
-                for (var i = 0; i < scope.setmodel.province.sub.length; i++) {
+                var len = scope.setmodel.province.sub.length;
+                for (var i = 0; i < len; i++) {
                     if (AreaData[1] === scope.setmodel.province.sub[i].name) {
                         $ionicScrollDelegate.$getByHandle(scope.setmodel.cityHandle).scrollTo(0, i * scope.setmodel.step);
                         scope.setmodel.city = scope.setmodel.province.sub[i];
@@ -43,7 +45,8 @@ app.factory('CityFactory', ['$ionicPopup', '$timeout', 'CityPickerService', '$io
                 }
             }
             if (AreaData[2] && scope.setmodel.city && scope.setmodel.city.sub) { // 初始化区
-                for (var i = 0; i < scope.setmodel.city.sub.length; i++) {
+                var len = scope.setmodel.city.sub.length;
+                for (var i = 0; i < len; i++) {
                     if (AreaData[2] === scope.setmodel.city.sub[i].name) {
                         $ionicScrollDelegate.$getByHandle(scope.setmodel.countryHandle).scrollTo(0, i * scope.setmodel.step);
                         scope.setmodel.country = scope.setmodel.city.sub[i];

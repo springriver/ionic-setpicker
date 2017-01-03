@@ -16,7 +16,13 @@
                     <div class="col">
                         <ion-scroll-minh delegate-handle={{setmodel.Handle}} on-scroll-complete="setmodel.getValue()" on-release="setmodel.scroll()" scrollbar-y=false>
                             <ul>
-                                <li ng-repeat="s in setmodel.Service">{{s.text}}</li>
+                                <li ng-repeat="s in setmodel.Service">
+                                    <div class="row text-left">
+                                        <div class="col popupcol" ng-class="s.text.v3==null && s.text.v2==null? '':(s.text.v3==null? 'col-50':'col-33')" ng-if="s.text.v1!=null">{{s.text.v1}}</div>
+                                        <div class="col popupcol" ng-class="s.text.v3==null && s.text.v2==null? '':(s.text.v3==null? 'col-50':'col-33')" ng-if="s.text.v2!=null">{{s.text.v2}}</div>
+                                        <div class="col popupcol" ng-class="s.text.v3==null && s.text.v2==null? '':(s.text.v3==null? 'col-50':'col-33')" ng-if="s.text.v3!=null">{{s.text.v3}}</div>
+                                    </div>
+                                </li>
                             </ul>
                         </ion-scroll-minh>
                     </div>
@@ -25,7 +31,13 @@
                     <div class="col">
                         <ion-scroll-minh delegate-handle={{setmodel.Handle}} on-scroll-complete="setmodel.getValue()" on-drag-up="setmodel.scroll()" on-drag-down="setmodel.scroll()" scrollbar-y=false>
                             <ul class="androidscroll">
-                                <li ng-repeat="s in setmodel.Service">{{s.text}}</li>
+                                <li ng-repeat="s in setmodel.Service">
+                                    <div class="row text-left">
+                                        <div class="col popupcol" ng-class="s.text.v3==null && s.text.v2==null? '':(s.text.v3==null? 'col-50':'col-33')" ng-if="s.text.v1!=null">{{s.text.v1}}</div>
+                                        <div class="col popupcol" ng-class="s.text.v3==null && s.text.v2==null? '':(s.text.v3==null? 'col-50':'col-33')" ng-if="s.text.v2!=null">{{s.text.v2}}</div>
+                                        <div class="col popupcol" ng-class="s.text.v3==null && s.text.v2==null? '':(s.text.v3==null? 'col-50':'col-33')" ng-if="s.text.v3!=null">{{s.text.v3}}</div>
+                                    </div>
+                                </li>
                             </ul>
                         </ion-scroll-minh>
                     </div>

@@ -990,4 +990,18 @@ angular.module('ionic-setpicker.service', ['ionic'])
                     "sub": [{"name": "巴南区"}, {"name": "北碚区"}, {"name": "长寿区"}, {"name": "大渡口区"}, {"name": "涪陵区"}, {"name": "合川区"}, {"name": "江北区"}, {"name": "江津区"}, {"name": "九龙坡区"}, {"name": "南岸区"}, {"name": "南川区"}, {"name": "黔江区"}, {"name": "沙坪坝区"}, {"name": "双桥区"}, {"name": "万盛区"}, {"name": "万州区"}, {"name": "永川区"}, {"name": "渝北区"}, {"name": "渝中区"}]
                 }]
             }];
+    })
+
+    .service('DatePickerService', function () {
+        this.getYearsList = function (from, to) {
+            var yearsList = [];
+            var minYear = 1900;
+            var maxYear = 2100;
+            minYear = from ? new Date(from).getFullYear() : minYear;
+            maxYear = to ? new Date(to).getFullYear() : maxYear;
+            for (var i = minYear; i <= maxYear; i++) {
+                yearsList.push(i);
+            }
+            return yearsList;
+        };
     });

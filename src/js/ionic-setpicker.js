@@ -1,33 +1,24 @@
 "use strict";
-var app = angular.module('ionic-setpicker', ['ionic', 'ionic-setpicker.factory.city', 'ionic-setpicker.factory.single', 'ionic-setpicker.factory.set', 'ionic-setpicker.directive', 'ionic-setpicker.templates']);
-app.directive('ionicSetPicker', ['$ionicPopup', '$timeout', '$ionicScrollDelegate', '$ionicModal', 'CityFactory', 'SingleFactory', 'SetFactory',
-    function ($ionicPopup, $timeout, $ionicScrollDelegate, $ionicModal, CityFactory, SingleFactory, SetFactory) {
+var app = angular.module('ionic-setpicker', ['ionic', 'ionic-setpicker.factory.city', 'ionic-setpicker.factory.single', 'ionic-setpicker.factory.set', 'ionic-setpicker.factory.date', 'ionic-setpicker.factory.popup', 'ionic-setpicker.directive', 'ionic-setpicker.templates']);
+app.directive('ionicSetPicker', ['$ionicPopup', '$timeout', '$ionicScrollDelegate', '$ionicModal', 'CityFactory', 'SingleFactory', 'SetFactory', 'DateFactory', 'PopupFactory',
+    function ($ionicPopup, $timeout, $ionicScrollDelegate, $ionicModal, CityFactory, SingleFactory, SetFactory, DateFactory, PopupFactory) {
 
         return {
             restrict: 'AE',
-            template: '<div class={{setmodel.cssClass}}><i class={{setmodel.iconClass}}></i><span class="item-title">{{setmodel.title}}</span><span class="item-note">{{setmodel.display}}</span></div>',
+            template: '<div ng-if="setmodel.settype!=\'popup\'" class={{setmodel.cssClass}}><i class={{setmodel.iconClass}}></i><span class="item-title">{{setmodel.title}}</span><span class="item-note">{{setmodel.display}}</span></div>' +
+                '<span ng-if="setmodel.settype==\'popup\'" class="item-note" style="color: #4b8bf4; padding-right: 15px;">{{setmodel.display}}</span>',
             scope: {
                 model: '=setModel'
             },
-            //scope: true,
             link: function (scope, element, attrs) {
                 scope.setmodel = scope.model;
                 scope.setmodel.isWorking = false;
-                if (scope.setmodel.platformId == null) {
-                    try {
-                        if (cordova != null) {
-                            scope.setmodel.platformId = cordova.platformId;
-                        }
-                    }
-                    catch (e) {
-                        scope.setmodel.platformId = "";
-                    }
-                }
+                scope.setmodel.platformId = ionic.Platform.platform();
                 scope.setmodel.uuid = Math.random().toString(36).substring(3, 8);
                 scope.setmodel.Handle = 'Handle-' + scope.setmodel.uuid;
                 scope.setmodel.step = 36; // 滚动步长 （li的高度）
                 scope.setmodel.selectValue = "";
-                scope.setmodel.cssClass = 'ionic-setpicker item padding ' + (angular.isDefined(scope.setmodel.cssClass) ? 'item-icon-left' : '');
+                scope.setmodel.cssClass = 'ionic-setpicker item ' + (angular.isDefined(scope.setmodel.cssClass) ? 'item-icon-left' : '');
                 scope.setmodel.iconClass = 'icon ' + (angular.isDefined(scope.setmodel.iconClass) ? scope.setmodel.iconClass : '');
                 scope.setmodel.barCssClass = angular.isDefined(scope.setmodel.barCssClass) ? scope.setmodel.barCssClass : 'bar-stable';
 
@@ -46,6 +37,12 @@ app.directive('ionicSetPicker', ['$ionicPopup', '$timeout', '$ionicScrollDelegat
                         break;
                     case "set":
                         scope.setmodel.factory = SetFactory;
+                        break;
+                    case "date":
+                        scope.setmodel.factory = DateFactory;
+                        break;
+                    case "popup":
+                        scope.setmodel.factory = PopupFactory;
                         break;
                 }
 
