@@ -1,7 +1,7 @@
 "use strict";
 var app = angular.module('ionic-setpicker.factory.set', ['ionic']);
-app.factory('SetFactory', ['$ionicPopup', '$timeout', '$ionicScrollDelegate',
-    function ($ionicPopup, $timeout, $ionicScrollDelegate) {
+app.factory('SetFactory', ['$ionicPopup', '$timeout', '$q', '$ionicScrollDelegate',
+    function ($ionicPopup, $timeout, $q, $ionicScrollDelegate) {
         var factory = {};
 
         factory.init = function (scope) {
@@ -22,7 +22,7 @@ app.factory('SetFactory', ['$ionicPopup', '$timeout', '$ionicScrollDelegate',
         };
 
         factory.getDisplay = function (scope) {
-            if (scope.setmodel.value == null || scope.setmodel.value == "('')")
+            if (scope.setmodel.value == null || scope.setmodel.value == "''" || scope.setmodel.value == "('')")
                 return '请选择';
             else
                 return scope.setmodel.value;
@@ -48,6 +48,7 @@ app.factory('SetFactory', ['$ionicPopup', '$timeout', '$ionicScrollDelegate',
         };
 
         factory.returnOk = function (scope) {
+            var df = $q.defer();
             var s = "";
             angular.forEach(scope.setmodel.Service, function (data) {
                 if (data.isChecked) {
@@ -58,12 +59,11 @@ app.factory('SetFactory', ['$ionicPopup', '$timeout', '$ionicScrollDelegate',
             });
             if (s == "")
                 s = "''";
-            s = "(" + s + ")";
+            //s = "(" + s + ")";
             scope.setmodel.value = s;
             scope.setmodel.display = scope.setmodel.getDisplay();
-            $timeout(function () {
-                scope.setmodel.settemplatesModel && scope.setmodel.settemplatesModel.hide();
-            }, 50)
+            df.resolve();
+            return df.promise;
         };
 
         factory.getValue = function (scope, name) {

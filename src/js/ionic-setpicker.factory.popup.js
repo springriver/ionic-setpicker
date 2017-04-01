@@ -1,7 +1,7 @@
 "use strict";
 var app = angular.module('ionic-setpicker.factory.popup', ['ionic']);
-app.factory('PopupFactory', ['$rootScope', '$ionicPopup', '$timeout', '$ionicScrollDelegate', '$http',
-    function ($rootScope, $ionicPopup, $timeout, $ionicScrollDelegate, $http) {
+app.factory('PopupFactory', ['$rootScope', '$ionicPopup', '$timeout', '$q', '$ionicScrollDelegate', '$http',
+    function ($rootScope, $ionicPopup, $timeout, $q, $ionicScrollDelegate, $http) {
         var factory = {};
 
         factory.init = function (scope) {
@@ -62,21 +62,25 @@ app.factory('PopupFactory', ['$rootScope', '$ionicPopup', '$timeout', '$ionicScr
         };
 
         factory.returnOk = function (scope) {
-            if (scope.setmodel.isWorking)
+            var df = $q.defer();
+            if (scope.setmodel.isWorking) {
+                df.reject();
                 return;
+            }
             $timeout(function () {
                 if (scope.setmodel.selectValue == null || scope.setmodel.selectValue == '') {
                     if (scope.setmodel.Service != null && scope.setmodel.Service.length > 0)
                         scope.setmodel.selectValue = scope.setmodel.Service[0].key;
-                    else
+                    else {
+                        df.reject();
                         return;
+                    }
                 }
                 scope.setmodel.value = scope.setmodel.selectValue;
                 scope.setmodel.display = scope.setmodel.getDisplay();
-                $timeout(function () {
-                    scope.setmodel.settemplatesModel && scope.setmodel.settemplatesModel.hide();
-                }, 50)
-            }, 500)
+                df.resolve();
+            }, 500);
+            return df.promise;
         };
 
         factory.getValue = function (scope, name) {

@@ -1,12 +1,31 @@
 "use strict";
 var app = angular.module('ionic-setpicker', ['ionic', 'ionic-setpicker.factory.city', 'ionic-setpicker.factory.single', 'ionic-setpicker.factory.set', 'ionic-setpicker.factory.date', 'ionic-setpicker.factory.popup', 'ionic-setpicker.directive', 'ionic-setpicker.templates']);
+
+app.directive('compile', ['$compile',
+    function ($compile) {
+        return {
+            restrict: 'A',
+            link: function (scope, element, attrs) {
+                scope.$watch(
+                    function (scope) {
+                        return scope.$eval(attrs.compile);
+                    },
+                    function (value) {
+                        element.html(value);
+                        $compile(element.contents())(scope);
+                    }
+                );
+            }
+        }
+    }]);
+
 app.directive('ionicSetPicker', ['$ionicPopup', '$timeout', '$ionicScrollDelegate', '$ionicModal', 'CityFactory', 'SingleFactory', 'SetFactory', 'DateFactory', 'PopupFactory',
     function ($ionicPopup, $timeout, $ionicScrollDelegate, $ionicModal, CityFactory, SingleFactory, SetFactory, DateFactory, PopupFactory) {
 
         return {
             restrict: 'AE',
             template: '<div ng-if="setmodel.settype!=\'popup\'" class={{setmodel.cssClass}}><i class={{setmodel.iconClass}}></i><span class="item-title">{{setmodel.title}}</span><span class="item-note">{{setmodel.display}}</span></div>' +
-                '<span ng-if="setmodel.settype==\'popup\'" class="item-note" style="color: #4b8bf4; padding-right: 15px;">{{setmodel.display}}</span>',
+            '<span ng-if="setmodel.settype==\'popup\'" class="item-note" style="color: #4b8bf4; padding-right: 15px;">{{setmodel.display}}</span>',
             scope: {
                 model: '=setModel'
             },
@@ -55,7 +74,9 @@ app.directive('ionicSetPicker', ['$ionicPopup', '$timeout', '$ionicScrollDelegat
                     return scope.setmodel.factory.loadingData(scope);
                 };
                 scope.setmodel.returnOk = function () {
-                    return scope.setmodel.factory.returnOk(scope);
+                    return scope.setmodel.factory.returnOk(scope).then(function(){
+                        scope.setmodel.settemplatesModel && scope.setmodel.settemplatesModel.hide();
+                    });
                 };
                 scope.setmodel.getValue = function (name) {
                     return scope.setmodel.factory.getValue(scope, name);
@@ -86,7 +107,7 @@ app.directive('ionicSetPicker', ['$ionicPopup', '$timeout', '$ionicScrollDelegat
                     } else {
                         $ionicModal.fromTemplateUrl(scope.setmodel.settemplates, {
                                 scope: scope,
-                                animation: 'slide-in-up',
+                                animation: 'no-animation',
                                 backdropClickToClose: false,
                                 hardwareBackButtonClose: true
                             })

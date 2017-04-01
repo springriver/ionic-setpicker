@@ -1,7 +1,7 @@
 "use strict";
 var app = angular.module('ionic-setpicker.factory.city', ['ionic', 'ionic-setpicker.service']);
-app.factory('CityFactory', ['$ionicPopup', '$timeout', 'CityPickerService', '$ionicScrollDelegate',
-    function ($ionicPopup, $timeout, CityPickerService, $ionicScrollDelegate) {
+app.factory('CityFactory', ['$ionicPopup', '$timeout', '$q', 'CityPickerService', '$ionicScrollDelegate',
+    function ($ionicPopup, $timeout, $q, CityPickerService, $ionicScrollDelegate) {
         var factory = {};
 
         factory.init = function (scope) {
@@ -57,8 +57,11 @@ app.factory('CityFactory', ['$ionicPopup', '$timeout', 'CityPickerService', '$io
         };
 
         factory.returnOk = function (scope) {
-            if (scope.setmodel.isWorking)
+            var df = $q.defer();
+            if (scope.setmodel.isWorking) {
+                df.reject();
                 return;
+            }
             $timeout(function () {
                 if (scope.setmodel.country == null) {
                     if (scope.setmodel.city && scope.setmodel.city.sub && scope.setmodel.city.sub.length > 0) {
@@ -67,10 +70,9 @@ app.factory('CityFactory', ['$ionicPopup', '$timeout', 'CityPickerService', '$io
                 }
                 (scope.setmodel.city && scope.setmodel.city.sub && scope.setmodel.city.sub.length > 0) ? (scope.setmodel.value = scope.setmodel.province.name + scope.setmodel.tag + scope.setmodel.city.name + scope.setmodel.tag + scope.setmodel.country.name ) : (scope.setmodel.value = scope.setmodel.province.name + scope.setmodel.tag + scope.setmodel.city.name);
                 scope.setmodel.display = scope.setmodel.getDisplay();
-                $timeout(function () {
-                    scope.setmodel.settemplatesModel && scope.setmodel.settemplatesModel.hide();
-                }, 50)
-            }, 500)
+                df.resolve();
+            }, 500);
+            return df.promise;
         };
 
         factory.getValue = function (scope, name) {

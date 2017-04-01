@@ -111,7 +111,7 @@
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
-    margin-top: 0px;
+    margin-top: 0;
     pointer-events: none;
 }
 
@@ -198,10 +198,18 @@ ionic-set-picker .item {
 .ionic_datepicker_modal {
     width: 250px;
     height: 380px;
-    top: 50px;
+    top: 30px;
     position: relative;
     margin-left: auto;
     margin-right: auto;
+}
+
+@media only screen and (min-device-width: 768px) {
+    .ionic_datepicker_modal {
+        position: absolute;
+        margin-top: auto;
+        margin-bottom: auto;
+    }
 }
 
 .ionic_datepicker_modal .header, .ionic_datepicker_modal .footer {

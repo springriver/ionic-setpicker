@@ -1,7 +1,7 @@
 "use strict";
 var app = angular.module('ionic-setpicker.factory.date', ['ionic', 'ionic-setpicker.service']);
-app.factory('DateFactory', ['$ionicPopup', '$timeout', '$filter', '$ionicScrollDelegate', 'DatePickerService',
-    function ($ionicPopup, $timeout, $filter, $ionicScrollDelegate, DatePickerService) {
+app.factory('DateFactory', ['$ionicPopup', '$timeout', '$q', '$filter', '$ionicScrollDelegate', 'DatePickerService',
+    function ($ionicPopup, $timeout, $q, $filter, $ionicScrollDelegate, DatePickerService) {
         var factory = {};
 
         factory.init = function (scope) {
@@ -33,6 +33,7 @@ app.factory('DateFactory', ['$ionicPopup', '$timeout', '$filter', '$ionicScrollD
             scope.setmodel.setLabel = '确定';
             scope.setmodel.todayLabel = '今天';
             scope.setmodel.closeLabel = '关闭';
+            scope.setmodel.clearLabel = '清除';
 
             scope.setmodel.today = scope.setmodel.resetHMSM(new Date()).getTime();
             scope.setmodel.disabledDates = [];
@@ -74,6 +75,11 @@ app.factory('DateFactory', ['$ionicPopup', '$timeout', '$filter', '$ionicScrollD
                 }
             };
 
+            scope.setmodel.clearIonicDatePickerDate = function (setmodel) {
+                setmodel.selectValue = null;
+                setmodel.returnOk(setmodel);
+            };
+
             scope.setmodel.setIonicDatePickerDate = function (setmodel) {
                 setmodel.returnOk(setmodel);
             };
@@ -83,9 +89,7 @@ app.factory('DateFactory', ['$ionicPopup', '$timeout', '$filter', '$ionicScrollD
                 setmodel.refreshDateList(setmodel, new Date());
                 scope.setmodel.selectValue = scope.setmodel.convertDateString(setmodel.resetHMSM(today));
                 setmodel.selctedDateEpoch = setmodel.resetHMSM(today).getTime();
-                if (setmodel.closeOnSelect) {
-                    setmodel.returnOk(setmodel);
-                }
+                setmodel.returnOk(setmodel);
             };
 
             scope.setmodel.setDisabledDates = function (setmodel) {
@@ -178,15 +182,15 @@ app.factory('DateFactory', ['$ionicPopup', '$timeout', '$filter', '$ionicScrollD
         };
 
         factory.returnOk = function (scope) {
-            if (scope.setmodel.isWorking)
+            var df = $q.defer();
+            if (scope.setmodel.isWorking) {
+                df.reject();
                 return;
-            if (scope.setmodel.selectValue != null || scope.setmodel.selectValue != '') {
-                scope.setmodel.value = scope.setmodel.selectValue;
-                scope.setmodel.display = scope.setmodel.getDisplay();
             }
-            $timeout(function () {
-                scope.setmodel.settemplatesModel && scope.setmodel.settemplatesModel.hide();
-            }, 50)
+            scope.setmodel.value = scope.setmodel.selectValue;
+            scope.setmodel.display = scope.setmodel.getDisplay();
+            df.resolve();
+            return df.promise;
         };
 
         factory.getValue = function (scope, name) {

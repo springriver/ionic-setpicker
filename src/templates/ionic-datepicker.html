@@ -2,6 +2,7 @@
     <ion-modal-view class="ionic_datepicker_modal" style="min-height: 0;">
         <ion-header-bar class="header">
             <h1 class="title">{{setmodel.selectValue | date : 'yyyy-MM-dd'}}</h1>
+            <button class="button button-clear" ng-click="setmodel.returnCancel()">{{setmodel.closeLabel}}</button>
         </ion-header-bar>
         <ion-content class="ionic_datepicker_modal_content" scroll="false">
             <div class="">
@@ -64,7 +65,7 @@
         <ion-footer-bar class="footer">
             <div class="row padding_zero">
                 <button class="button button-clear button-block button_close"
-                        ng-click="setmodel.returnCancel()">{{setmodel.closeLabel}}
+                        ng-click="setmodel.clearIonicDatePickerDate(setmodel)">{{setmodel.clearLabel}}
                 </button>
                 <button class="button button-clear button-block button_today" ng-if="setmodel.showTodayButton"
                         ng-click="setmodel.setIonicDatePickerTodayDate(setmodel)">{{setmodel.todayLabel}}
